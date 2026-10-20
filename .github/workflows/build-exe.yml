@@ -1,0 +1,22 @@
+name: Build Windows EXE
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install PyInstaller
+        run: pip install pyinstaller
+      - name: Build MakerBox.exe
+        run: pyinstaller --onefile --windowed --name MakerBox src/app.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MakerBox-windows
+          path: dist/MakerBox.exe
